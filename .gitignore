@@ -1,0 +1,17 @@
+.env
+*.env
+venv/
+
+tests/data
+tests/*/data
+tests/*/chroma_db
+
+.env.local
+.DS_Store
+localrd.*
+*.sqlite3
+
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
