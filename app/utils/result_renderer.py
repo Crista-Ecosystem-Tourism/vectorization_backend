@@ -1,5 +1,6 @@
 from typing import List, Dict, Any
 import json
+from pprint import pprint
 from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
@@ -113,6 +114,7 @@ class ResultRenderer:
     def print_minimal_view(results: List[Dict[str, Any]]):
         """Минималистичный вывод"""
         for i, result in enumerate(results, 1):
+            pprint(result)
             console.print(
                 f"[bold]{i}. {result.get('name', 'Без названия')}[/bold]\n"
                 f"   ⭐ {result.get('rating', 'N/A')}/5 | "
@@ -120,6 +122,10 @@ class ResultRenderer:
                 f"📍 {result.get('address', '')}\n"
                 f"   [dim]{result.get('category', '')}[/dim]"
             )
+    
+    @staticmethod
+    def return_as_json(results: List[Dict[str, Any]]):
+        return json.dumps(results, ensure_ascii=False, indent=2)
 
     @staticmethod
     def print_map_view(results: List[Dict[str, Any]]):

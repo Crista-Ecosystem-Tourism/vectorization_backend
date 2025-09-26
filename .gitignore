@@ -5,11 +5,15 @@ venv/
 tests/data
 tests/*/data
 tests/*/chroma_db
+vector_store/*
+app/vector_store/*
 
 .env.local
 .DS_Store
-localrd.*
 *.sqlite3
+
+*_old.*
+*_old
 
 __pycache__/
 *.pyc

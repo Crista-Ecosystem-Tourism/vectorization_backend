@@ -47,8 +47,8 @@ class EmbeddingProvider:
                 init_params['model_name'] = self.model_name
             # init_params['model_kwargs'] = {'device': 'cuda'}
             init_params['encode_kwargs'] = {
-                'normalize_embeddings': True,  # Важно для косинусного сходства
-                'batch_size': 32  # Размер батча для обработки
+                'normalize_embeddings': True,
+                'batch_size': 32
             }
             logger.info(f"Используется HuggingFace Embeddings модель: {self.model_name}")
             self.model = HuggingFaceEmbeddings(**init_params)

@@ -2,7 +2,7 @@ import json
 import csv
 import requests
 from typing import List, Dict, Any, Union
-from app.utils import get_logger
+from app.utils.logger import get_logger
 
 logger = get_logger(__name__)
 
