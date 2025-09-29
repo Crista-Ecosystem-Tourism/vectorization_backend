@@ -216,8 +216,8 @@ class DatasetQualityAnalyzer:
 
         return dict(most_common)
 
-    def analyze_vectorizer_text_length_ranges(self, vectorizer):
-        texts = [vectorizer._prepare_text(item) for item in self.dataset if isinstance(item, dict)]
+    def analyze_vectorizer_text_length_ranges(self, text_preparer):
+        texts = [text_preparer.prepare_text(item) for item in self.dataset if isinstance(item, dict)]
 
         char_lengths = [len(text) for text in texts]
 
