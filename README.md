@@ -1,49 +1,25 @@
-# Vectorizer Service
+# Crista — Vectorization Backend
 
-Сервис для загрузки данных, их векторизации и семантического поиска мест.
+Семантический поиск мест: **FastAPI**, эмбеддинги (Hugging Face), **ChromaDB** по HTTP.
 
-## Зависимости
+## Роль
 
-- Python 3.13+
-- ChromaDB Server (запускается отдельно на порту 8010)
+Загрузка JSON/API, `POST /api/v1/search` для RAG в **ai_agent**. В стеке `CHROMA_HOST`/`CHROMA_PORT` указывают на **сервис** `chromadb`.
 
-## Запуск
+## Локально
 
-### 1. ChromaDB Server (обязательно первым)
-
-```bash
-./venv/Scripts/chroma.exe run \
-  --path ./app/vector_store/sochi_rests_and_piter_chroma_db \
-  --port 8010 --host 0.0.0.0
-```
-
-### 2. Vectorization Backend
+Сначала **Chroma** на **:8010**, затем:
 
 ```bash
-source venv/Scripts/activate
+cd vectorization_backend
+source venv/bin/activate
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8001
 ```
 
-### 3. Загрузка данных (первый раз)
+## CI/CD
 
-```bash
-curl -X POST "http://localhost:8001/api/v1/load/json?filepath=/path/to/data.json"
-```
+Синк в [crs/vectorization_backend](https://github.com/Crista-Ecosystem-Tourism/crs): [инструкция](https://github.com/Crista-Ecosystem-Tourism/crs/blob/main/docs/CI-CD-SYNC.md), `CRS_SYNC_PAT`.
 
-## Конфигурация (.env)
+## Полная документация
 
-```
-EMBEDDING_PROVIDER=huggingface
-EMBEDDING_MODEL_NAME=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
-CHROMA_HOST=localhost
-CHROMA_PORT=8010
-NO_PROXY=localhost,127.0.0.1
-HTTP_PROXY=
-HTTPS_PROXY=
-```
-
-## API
-
-- `POST /api/v1/search` — семантический поиск мест
-- `POST /api/v1/load/json?filepath=...` — загрузка данных из JSON-файла
-- `POST /api/v1/load/api?url=...` — загрузка данных из внешнего API
+[README `crs`](https://github.com/Crista-Ecosystem-Tourism/crs#readme)
