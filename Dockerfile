@@ -1,5 +1,6 @@
 # syntax=docker/dockerfile:1.6
-FROM python:3.13-slim
+# 3.12: стабильные бинарные колёса torch/transformers при pip install (3.13 на билд-сервере часто падает или OOM).
+FROM python:3.12-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
