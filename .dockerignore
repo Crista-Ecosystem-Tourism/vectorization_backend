@@ -24,3 +24,8 @@ README*.md
 docs
 chroma_data
 chroma_db
+# Большой seed JSON (15 MB) — монтируется как volume через data_seed, не нужен в образе
+data
+# Тесты и тестовые фикстуры — не часть рантайма
+tests
+search_test.json

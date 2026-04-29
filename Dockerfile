@@ -14,6 +14,11 @@ RUN apt-get update \
  && apt-get install -y --no-install-recommends build-essential \
  && rm -rf /var/lib/apt/lists/*
 
+# CPU-only torch до основных зависимостей: sentence-transformers увидит готовый torch
+# и не подтянет CUDA-сборку с PyPI (~2 GB) — режет холодный билд на ~3 минуты.
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install --index-url https://download.pytorch.org/whl/cpu torch
+
 COPY requirements.txt ./
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install -r requirements.txt
