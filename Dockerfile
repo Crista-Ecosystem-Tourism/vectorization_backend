@@ -32,14 +32,19 @@ FROM python:3.12-slim AS runtime
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
-    HF_HOME=/root/.cache/huggingface \
-    TRANSFORMERS_CACHE=/root/.cache/huggingface \
+    HF_HOME=/app/.cache/huggingface \
+    TRANSFORMERS_CACHE=/app/.cache/huggingface \
     PATH="/opt/venv/bin:$PATH"
 
 WORKDIR /app
 
 COPY --from=builder /opt/venv /opt/venv
 COPY . .
+
+RUN adduser --disabled-password --no-create-home --gecos "" appuser \
+ && mkdir -p /app/.cache/huggingface \
+ && chown -R appuser:appuser /app
+USER appuser
 
 EXPOSE 8001
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8001"]
