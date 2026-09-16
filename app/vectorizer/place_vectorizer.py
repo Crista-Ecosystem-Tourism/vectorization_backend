@@ -20,7 +20,8 @@ class PlaceVectorizer:
     def build_and_store_embeddings(self, places: List[Dict[str, Any]], batch_size: int = 50):
         texts = [self.text_preparer.prepare_text(p) for p in places]
         metadatas = [self.text_preparer.create_metadata(p) for p in places]
-        self.vector_store_manager.add_texts(texts, metadatas)
+        ids = [str(place.get("id") or "") for place in places]
+        self.vector_store_manager.add_texts(texts, metadatas, ids)
         self.vector_store_manager.persist()
         logger.info(f"Embeddings built and stored for {len(places)} places")
 

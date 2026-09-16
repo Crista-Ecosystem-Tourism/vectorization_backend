@@ -17,15 +17,26 @@ class VectorStoreManager:
         self.vector_store = None
         self.load()
 
-    def add_texts(self, texts: List[str], metadatas: List[Dict[str, Any]]):
+    def add_texts(
+        self,
+        texts: List[str],
+        metadatas: List[Dict[str, Any]],
+        ids: List[str],
+    ):
         if self.vector_store is None:
             self.load()
+        if len(texts) != len(metadatas) or len(texts) != len(ids):
+            raise ValueError("texts, metadatas and ids must have the same length")
+        if any(not document_id for document_id in ids) or len(set(ids)) != len(ids):
+            raise ValueError("document ids must be non-empty and unique within a batch")
         # Sanitize metadata: ChromaDB 1.x rejects None values
         clean = [
             {k: v for k, v in m.items() if v is not None and isinstance(v, (str, int, float, bool))}
             for m in metadatas
         ]
-        self.vector_store.add_texts(texts=texts, metadatas=clean)
+        # Chroma upserts a document with an existing ID. Stable IDs make a
+        # re-index update the place rather than append a duplicate embedding.
+        self.vector_store.add_texts(texts=texts, metadatas=clean, ids=ids)
 
     def similarity_search_with_score(self, query_text: str, k: int, filter=None):
         if self.vector_store is None:
